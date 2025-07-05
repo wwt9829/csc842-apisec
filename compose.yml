@@ -1,7 +1,9 @@
+version: "3"
 services:
   httpd:
     build:
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8080:80"   # Web server
+      - "2222:22"   # SSH
     restart: always
