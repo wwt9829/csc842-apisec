@@ -7,3 +7,5 @@ services:
       - "8080:80"   # Web server
       - "2222:22"   # SSH
     restart: always
+    environment:
+      - FLAG_PART_2="(2/3)_t0_th3_"
