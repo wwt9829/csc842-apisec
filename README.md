@@ -7,6 +7,20 @@ During the last cycle, I received many questions about how I stored API keys in 
 ## Infrastructure and Solution
 <img src="CSC-842 Cycle 8.png" alt="Diagram showing path to solve challenge"/>
 
+### Sample compose.yml
+```
+services:
+  apisec:
+    build:
+      dockerfile: Dockerfile
+    image: wwt92829/csc842-cycle8
+    ports:
+      - "8080:80"   # Web server
+      - "2222:22"   # SSH
+    container_name: csc842-cycle8
+    restart: always
+```
+
 ## Main Ideas
 1. **In a web application, API keys should never be stored in a manner that is accessible client-side.** This application shows an example of a leaked Google Maps API key that is stored in the HTML of a webpage.
 2. **There are multiple ways to store API keys on a system, each offering different levels of protection.** This application demonstrates the following storage methods:
