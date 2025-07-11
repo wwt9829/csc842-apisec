@@ -1,10 +1,10 @@
 # API Security CTF Challenge
 DSU CSC-848 Cycle 8 | [Presentation]()
 
-## Overview
+## Motivation
 During the last cycle, I received many questions about how I stored API keys in my [URL Shortener Typo Generator](https://github.com/wwt9829/bit.ly-typos) as well as about API key security in general. In this cycle, I decided to create a demo showing an example of a (harmless) leaked Google Maps API key as well as several methods of more securely storing keys in the form of a CTF challenge. The player will find the insecure key in the Maps frame (easy challenge) along with SSH credentials to progress to the medium challenge. In the medium challenge, the player will find flags in the three common API key storage methods I discussed with my classmates during the previous cycles.
 
-## Infrastructure
+## Infrastructure and Solution
 <img src="CSC-842 Cycle 8.png" alt="Diagram showing path to solve challenge"/>
 
 ## Main Ideas
@@ -14,3 +14,10 @@ During the last cycle, I received many questions about how I stored API keys in 
     -   **Environment variable:** While stored in memory instead of on disk, API keys stored in environment variables are still accessible to anyone on the system.
     -   **System secrets manager/keyring:** Perhaps the most secure method, this option stores the API keys in the same manner as systems secrets, resulting in strong security but also more varied implementation due to the reliance on operating system components.
 3. **Use Docker secret mounts for secrets management in Docker containers.** Docker containers do not implement dbus, which is required for secrets managment on Linux. Instead, Docker recommends you use [secret mounts](https://docs.docker.com/build/building/secrets/#secret-mounts). (For this container, I implemented a script that takes the place of secret-tool and has only the functionality required to solve the challenge.)
+
+## Future Direction
+1. Standard user with reduced shell: I'd like to give the player different SSH credentials for a standard user account with a reduced shell, limiting access to tools like `grep` that would make it more difficult to solve the challenge in unintended ways.
+2. Syslog: If this were an actual CTF challenge, I'd also like a way to monitor the commands the users are executing to watch for any circumvention of the rules. I'll probably implement syslog to send Bash history to my syslog server.
+
+## References
+No formal references - mostly just the discussions with my classmates from cycles 2, 4, and 6
