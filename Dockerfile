@@ -32,6 +32,17 @@ COPY .gitignore /var/www/html
 # Add med flag (2 of 3) as environment variable
 RUN echo 'FLAG_PART_2=_t0_th3_' >> /etc/environment
 
+# Create a fake keyring file and fake secret-tool since docker doesn't support dbus
+RUN mkdir -p /root/.local/share/keyrings && \
+    echo "FLAG_PART_3: k1ngd0m}" > /root/.local/share/keyrings/gnome-keyring.login.secret && \
+    echo -e '#!/bin/sh\nif [ "$1" = "lookup" ]; then\n  cat /root/.local/share/keyrings/gnome-keyring.login.secret\nelse\n  echo "Usage: secret-tool lookup <attr> <value>" >&2; exit 1\nfi' > /usr/local/bin/secret-tool && \
+    chmod +x /usr/local/bin/secret-tool
+
+# Create a fake man page for the fake secret-tool
+RUN apt-get install -y man-db
+COPY secret-tool.1 /opt/fake-man/secret-tool.1
+RUN echo -e '#!/bin/sh\nless /opt/fake-man/$1.1' > /usr/local/bin/man && chmod +x /usr/local/bin/man
+
 # Expose both HTTP and SSH ports
 EXPOSE 80 22
 
