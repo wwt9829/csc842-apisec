@@ -8,7 +8,7 @@ During the last cycle, I received many questions about how I stored API keys in 
 <img src="CSC-842 Cycle 8.png" alt="Diagram showing path to solve challenge"/>
 
 ## Main Ideas
-1. **In a web application, API keys should never be stored in a manner that is accessible to the clients.** This application shows an example of a leaked Google Maps API key that is stored in the HTML of a webpage.
+1. **In a web application, API keys should never be stored in a manner that is accessible client-side.** This application shows an example of a leaked Google Maps API key that is stored in the HTML of a webpage.
 2. **There are multiple ways to store API keys on a system, each offering different levels of protection.** This application demonstrates the following storage methods:
     -   **.gitignore'd text file:** The simplest and least secure method, this file isn't pushed to a Git repository but is still accessible on the file system. The access permissions for the API key file can be adjuted for a bit of extra security, such as restricting access only to certain accounts.
     -   **Environment variable:** While stored in memory instead of on disk, API keys stored in environment variables are still accessible to anyone on the system.
