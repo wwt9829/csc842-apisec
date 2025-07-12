@@ -1,5 +1,5 @@
 # API Security CTF Challenge
-DSU CSC-848 Cycle 8 | [Presentation]()
+DSU CSC-848 Cycle 8 | [Presentation]() | [GitHub](https://github.com/wwt9829/csc842-apisec) | [Docker Hub](https://hub.docker.com/repository/docker/wwt92829/csc842-cycle8/general)
 
 ## Motivation
 During the last cycle, I received many questions about how I stored API keys in my [URL Shortener Typo Generator](https://github.com/wwt9829/bit.ly-typos) as well as about API key security in general. In this cycle, I decided to create a demo showing an example of a (harmless) leaked Google Maps API key as well as several methods of more securely storing keys in the form of a CTF challenge. The player will find the insecure key in the Maps frame (easy challenge) along with SSH credentials to progress to the medium challenge. In the medium challenge, the player will find flags in the three common API key storage methods I discussed with my classmates during the previous cycles.
