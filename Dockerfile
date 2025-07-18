@@ -7,6 +7,10 @@ RUN apt-get update && \
 # Set root password
 RUN echo 'root:SaharanNotSahara' | chpasswd
 
+# Add a non-root user
+RUN useradd -ms /bin/bash chad
+RUN echo 'chad:SaharanNotSahara' | chpasswd
+
 # Allow root login via SSH
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
@@ -36,7 +40,7 @@ RUN echo 'FLAG_PART_2=_t0_th3_' >> /etc/environment
 RUN mkdir -p /root/.local/share/keyrings && \
     echo "FLAG_PART_3: k1ngd0m}" > /root/.local/share/keyrings/gnome-keyring.login.secret && \
     echo -e '#!/bin/sh\nif [ "$1" = "lookup" ]; then\n  cat /root/.local/share/keyrings/gnome-keyring.login.secret\nelse\n  echo "Usage: secret-tool lookup <attr> <value>" >&2; exit 1\nfi' > /usr/local/bin/secret-tool && \
-    chmod +x /usr/local/bin/secret-tool
+    chmod u+s,+x /usr/local/bin/secret-tool
 
 # Create a fake man page for the fake secret-tool
 RUN apt-get install -y man-db
