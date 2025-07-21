@@ -59,5 +59,9 @@ RUN echo 'local1.* @10.0.30.161:5555' >> /etc/rsyslog.conf
 # Expose both HTTP and SSH ports
 EXPOSE 80 22
 
+# Restrict grep to root
+RUN chown root:root /usr/bin/grep
+RUN chmod 700 /usr/bin/grep
+
 # Start both Apache and SSHD
 CMD rsyslogd && service ssh start && nginx -g "daemon off;"
