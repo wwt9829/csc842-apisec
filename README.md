@@ -1,5 +1,5 @@
 # API Security CTF Challenge
-[GitHub](https://github.com/wwt9829/csc842-apisec) | [Docker Hub](https://hub.docker.com/repository/docker/wwt92829/csc842-cycle8/general)
+[GitHub](https://github.com/wwt9829/csc842-apisec) | [Docker Hub](https://hub.docker.com/r/wwt92829/csc848-apisec)
 DSU CSC-848 Cycle 8 | [Presentation](https://youtu.be/veqoNRxKiAM)
 DSU CSC-848 Cycle 10 | [Presentation]()
 
