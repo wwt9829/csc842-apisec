@@ -17,11 +17,11 @@ services:
   apisec:
     build:
       dockerfile: Dockerfile
-    image: wwt92829/csc842-cycle8
+    image: wwt92829/csc842-apisec
     ports:
       - "8080:80"   # Web server
       - "2222:22"   # SSH
-    container_name: csc842-cycle8
+    container_name: csc842-apisec
     restart: always
 ```
 
