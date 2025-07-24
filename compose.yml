@@ -4,7 +4,7 @@ services:
       dockerfile: Dockerfile
     image: wwt92829/csc842-apisec
     ports:
-      - "8080:80"   # Web server
-      - "2222:22"   # SSH
+      - "8443:443"   # HTTPS
+      - "2222:22"    # SSH
     container_name: csc842-apisec
     restart: always

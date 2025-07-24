@@ -15,6 +15,16 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 # Copy website content (easy flag)
 COPY ./public-html/ /var/www/html
 
+# Configure HTTPS
+RUN apt-get install -y openssl
+RUN mkdir -p /etc/nginx/ssl && \
+    openssl req -x509 -nodes -days 365 \
+        -subj "/C=US/ST=DC/L=Washington/O=CHAD-HOC/CN=localhost" \
+        -newkey rsa:2048 \
+        -keyout /etc/nginx/ssl/nginx.key \
+        -out /etc/nginx/ssl/nginx.crt
+COPY nginx-ssl.conf /etc/nginx/conf.d/default.conf
+
 # Install git
 RUN apt-get install -y git
 
@@ -57,7 +67,7 @@ RUN echo 'export PROMPT_COMMAND='\''RETRN_VAL=$?; logger -p local1.info "USER=$(
 RUN echo 'local1.* @10.0.30.161:5555' >> /etc/rsyslog.conf
 
 # Expose both HTTP and SSH ports
-EXPOSE 80 22
+EXPOSE 443 22
 
 # Restrict grep to root
 RUN chown root:root /usr/bin/grep
