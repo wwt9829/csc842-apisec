@@ -61,10 +61,20 @@ RUN apt-get install -y man-db
 COPY secret-tool.1 /opt/fake-man/secret-tool.1
 RUN echo -e '#!/bin/sh\nless /opt/fake-man/$1.1' > /usr/local/bin/man && chmod +x /usr/local/bin/man
 
+# Set default logging host and port (can be overridden)
+ARG LOGGING_HOST="localhost"
+ARG LOGGING_UDP_PORT="514"
+
 # Start logging
 RUN apt-get install -y rsyslog
-RUN echo 'export PROMPT_COMMAND='\''RETRN_VAL=$?; logger -p local1.info "USER=$(whoami) PWD=$PWD CMD=test"'\''' >> /home/chad/.bashrc
-RUN echo 'local1.* @10.0.30.161:5555' >> /etc/rsyslog.conf
+RUN echo 'export PROMPT_COMMAND='\''RETRN_VAL=$?; logger -p local1.info "IP=${SSH_CLIENT%% *} PWD=$PWD CMD=$(history 1)"'\''' >> /home/chad/.bashrc
+RUN echo "local1.* @${LOGGING_HOST}:${LOGGING_UDP_PORT}" >> /etc/rsyslog.conf
+RUN chown root:root /home/chad/.bashrc && chmod 755 /home/chad/.bashrc
+
+# Set the welcome message
+RUN rm -f /etc/update-motd.d/*
+RUN rm -f /etc/legal
+COPY banner.txt /etc/motd
 
 # Expose both HTTP and SSH ports
 EXPOSE 443 22

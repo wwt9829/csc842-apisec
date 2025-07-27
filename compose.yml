@@ -2,9 +2,13 @@ services:
   apisec:
     build:
       dockerfile: Dockerfile
+      args:
+        LOGGING_HOST: host.docker.internal
+        LOGGING_UDP_PORT: 5140
     image: wwt92829/csc842-apisec
     ports:
       - "8443:443"   # HTTPS
       - "2222:22"    # SSH
     container_name: csc842-apisec
+    hostname: csc842-apisec
     restart: always
