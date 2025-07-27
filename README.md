@@ -1,10 +1,6 @@
 # API Security CTF Challenge
 [GitHub](https://github.com/wwt9829/csc842-apisec) | [Docker Hub](https://hub.docker.com/r/wwt92829/csc842-apisec)
 
-DSU CSC-842 Cycle 8 | [Presentation](https://youtu.be/veqoNRxKiAM)
-
-DSU CSC-842 Cycle 10 | [Presentation]()
-
 ## Motivation
 During the last cycle, I received many questions about how I stored API keys in my [URL Shortener Typo Generator](https://github.com/wwt9829/bit.ly-typos) as well as about API key security in general. In this cycle, I decided to create a demo showing an example of a (harmless) leaked Google Maps API key as well as several methods of more securely storing keys in the form of a CTF challenge. The player will find the insecure key in the Maps frame (easy challenge) along with SSH credentials to progress to the medium challenge. In the medium challenge, the player will find flags in the three common API key storage methods I discussed with my classmates during the previous cycles.
 
@@ -27,7 +23,7 @@ During the last cycle, I received many questions about how I stored API keys in 
 * **Standard user** `chad` instead of root user for accessing the medium challenge, with restrictions:
   * *No grep* to prevent grepping for the flag components without attempting to solve the challenge
   * *Root-owned .bashrc* to ensure the user doesn't accidentally delete the logging components in the file
-* **`secret-tool` C application** since standard users cannot access the system keystore by default and the sticky bit doesn't function for Bash scripts
+* **`secret-tool` C application** since standard users cannot access the system keystore by default and the [sticky bit](https://www.redhat.com/en/blog/suid-sgid-sticky-bit) doesn't function to allow Bash scripts to be run as root by other users
 * **Logging to Graylog** via `rsyslog`, reporting the SSH IP address, working directory, and command ran for each interaction
 * **SSH banner** with a welcome message and reminders of the CTF rules
 
@@ -40,8 +36,10 @@ During the last cycle, I received many questions about how I stored API keys in 
 3. **Use Docker secret mounts for secrets management in Docker containers.** Docker containers do not implement dbus, which is required for secrets managment on Linux. Instead, Docker recommends you use [secret mounts](https://docs.docker.com/build/building/secrets/#secret-mounts). (For this container, I implemented a script that takes the place of secret-tool and has only the functionality required to solve the challenge.)
 
 ## Future Direction
-1. Standard user with reduced shell: I'd like to give the player different SSH credentials for a standard user account with a reduced shell, limiting access to tools like `grep` that would make it more difficult to solve the challenge in unintended ways.
-2. Syslog: If this were an actual CTF challenge, I'd also like a way to monitor the commands the users are executing to watch for any circumvention of the rules. I'll probably implement syslog to send Bash history to my syslog server.
+1. Additional logging, such as for the web and SSH servers, would be useful to see who is accessing the site and which users players or others are trying to log in as This would allow for better blocking of bots and malicious individuals not associated with the CTF.
 
 ## References
-No formal references - mostly just the discussions with my classmates from cycles 2, 4, and 6
+* [rsyslog manual](https://www.rsyslog.com/doc/index.html)
+* [Graylog installation](https://go2docs.graylog.org/current/downloading_and_installing_graylog/installing_graylog.html)
+* [API Security CTF Challenge | DSU CSC-842 Cycle 8](https://youtu.be/veqoNRxKiAM) presentation
+* Discussions with my classmates from cycles 2, 4, 6, and 8
