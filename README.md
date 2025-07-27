@@ -41,5 +41,6 @@ During the last cycle, I received many questions about how I stored API keys in 
 ## References
 * [rsyslog manual](https://www.rsyslog.com/doc/index.html)
 * [Graylog installation](https://go2docs.graylog.org/current/downloading_and_installing_graylog/installing_graylog.html)
+* [API Sec CTF Challenge: C/sticky bit, Graylog, etc. | DSU CSC-842 Cycle 10](https://youtu.be/epyJwnRlfqo) presentation
 * [API Security CTF Challenge | DSU CSC-842 Cycle 8](https://youtu.be/veqoNRxKiAM) presentation
 * Discussions with my classmates from cycles 2, 4, 6, and 8
