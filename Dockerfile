@@ -7,10 +7,6 @@ RUN apt-get update && \
 # Add a non-root user
 RUN useradd -ms /bin/bash chad
 RUN echo 'chad:SaharanNotSahara' | chpasswd
-RUN echo 'root:SaharanNotSahara' | chpasswd
-
-# Allow root login via SSH
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # Copy website content (easy flag)
 COPY ./public-html/ /var/www/html

@@ -9,21 +9,27 @@ DSU CSC-842 Cycle 10 | [Presentation]()
 During the last cycle, I received many questions about how I stored API keys in my [URL Shortener Typo Generator](https://github.com/wwt9829/bit.ly-typos) as well as about API key security in general. In this cycle, I decided to create a demo showing an example of a (harmless) leaked Google Maps API key as well as several methods of more securely storing keys in the form of a CTF challenge. The player will find the insecure key in the Maps frame (easy challenge) along with SSH credentials to progress to the medium challenge. In the medium challenge, the player will find flags in the three common API key storage methods I discussed with my classmates during the previous cycles.
 
 ## Infrastructure and Solution
-<img src="diagram.png" alt="Diagram showing path to solve challenge"/>
+<img src="csc842-apisec.png" alt="Diagram showing path to solve challenge"/>
 
-### Sample compose.yml
-```
-services:
-  apisec:
-    build:
-      dockerfile: Dockerfile
-    image: wwt92829/csc842-apisec
-    ports:
-      - "8080:80"   # Web server
-      - "2222:22"   # SSH
-    container_name: csc842-apisec
-    restart: always
-```
+### Cycle 8
+* **Dockerfile and Compose file for:**
+  * *NGINX web server* with 2 pages containing the easy challenge and the credentials to access the medium challenge
+  * *SSH server* to log in to the medium challenge as root and search for the flag
+* **Flag components**:
+  * *Part 1:* Contained in the .gitignore file in the git repo `/var/www/html`
+  * *Part 2:* An environment variable `FLAG_PART_2`
+  * *Part 3:* Viewed through `secret-tool` script (due to the lack of actual `secret-tool` in Docker)
+    * Fake manpage for `secret-tool` script to convey realism
+
+### Cycle 10
+* **More realistic webpage content** for the medium challenge, along with subtle hints, above the credentials
+* **Enable HTTPS on NGINX webserver** to improve access to the easy challenge as this is enforced on most browsers
+* **Standard user** `chad` instead of root user for accessing the medium challenge, with restrictions:
+  * *No grep* to prevent grepping for the flag components without attempting to solve the challenge
+  * *Root-owned .bashrc* to ensure the user doesn't accidentally delete the logging components in the file
+* **`secret-tool` C application** since standard users cannot access the system keystore by default and the sticky bit doesn't function for Bash scripts
+* **Logging to Graylog** via `rsyslog`, reporting the SSH IP address, working directory, and command ran for each interaction
+* **SSH banner** with a welcome message and reminders of the CTF rules
 
 ## Main Ideas
 1. **In a web application, API keys should never be stored in a manner that is accessible client-side.** This application shows an example of a leaked Google Maps API key that is stored in the HTML of a webpage.
